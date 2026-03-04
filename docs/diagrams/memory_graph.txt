@@ -1,0 +1,19 @@
+SageAgent Hierarchical Memory Graph Architecture.
+
+A directed acyclic graph (DAG) implemented with NetworkX showing how agents store and retrieve information.
+
+The graph has 4 types of nodes shown as different colored shapes:
+- TaskContext nodes (blue rectangles): Store task description, decomposition decisions, assigned agent. Root nodes of the graph.
+- Discovery nodes (green diamonds): Store findings - code patterns, vulnerabilities, test cases. Have finding_type, details, confidence score.
+- Execution nodes (orange circles): Store tool outputs - tool_name, parameters, output, status.
+- Relationship nodes (purple hexagons): Store dependencies between subtasks - source_task, target_task, relationship_type.
+
+Edges between nodes are labeled with relationship types: "derived_from", "depends_on", "supersedes", "produced", "verified_by".
+
+Example subgraph shown:
+TaskContext("Analyze codebase") -> Discovery("SQL injection found") -> Execution("shell: grep -r 'SELECT'")
+TaskContext("Analyze codebase") -> Discovery("Unused imports")
+
+Below the graph: MemoryQuery interface with operations: by_type(), context_for_task(), search(). Garbage Collector removes unreachable and expired nodes.
+
+The graph demonstrates how agents write results as nodes and dependent agents traverse edges to retrieve context.

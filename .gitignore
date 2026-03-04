@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Environment / Secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.yaml
+secrets.json
+# SOPS encrypted files are OK to commit (*.enc.yaml, *.enc.json)
+# but plaintext secrets must never be committed
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Paperbanana outputs
+outputs/

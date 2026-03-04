@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sageagent"
+version = "0.1.0"
+description = "Open-source implementation of the OpenSage Agent Development Kit"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+    "anthropic>=0.39.0",
+    "openai>=1.50.0",
+    "networkx>=3.2",
+    "pydantic>=2.5",
+    "typer>=0.12",
+    "docker>=7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "pytest-asyncio>=0.24",
+    "black>=24.0",
+    "ruff>=0.8.0",
+]
+
+[project.scripts]
+sageagent = "sageagent.cli:app"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "--cov=sageagent --cov-branch --cov-fail-under=100 --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["sageagent"]
+branch = true
+data_file = ".coverage"
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "if __name__ == .__main__.",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort (import sorting)
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sageagent"]

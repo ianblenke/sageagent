@@ -1,0 +1,30 @@
+SageAgent Dynamic Tool System Architecture.
+
+Shows the tool lifecycle: registration, discovery, dynamic generation, and invocation.
+
+Center: ToolRegistry - the central hub. Contains registered tools indexed by name and tags.
+
+Left side - Built-in Tools (pre-registered):
+- ShellTool: Executes shell commands with timeout. Tags: [shell, execution, command]
+- FileReadTool: Reads file contents. Tags: [file, read, filesystem]
+- FileWriteTool: Writes files, creates dirs. Tags: [file, write, filesystem]
+- FileSearchTool: Glob pattern search. Tags: [file, search, glob]
+- DockerTool: Sandboxed container execution with memory limits. Tags: [docker, sandbox, container]
+- CodeAnalysisTool: AST-based Python analysis. Tags: [analysis, code, static]
+
+Right side - DynamicToolGenerator:
+- Agent determines a needed tool doesn't exist
+- LLM generates Python code implementing the Tool base class
+- Code is compiled, validated (name, description, schema checks), and registered
+- New tool becomes available to all agents
+
+Bottom: Tool Interface (base class):
+- name: str (unique identifier)
+- description: str (human-readable)
+- parameters_schema: dict (JSON Schema)
+- execute(**kwargs) -> ToolResult (async execution)
+- to_llm_schema() -> dict (converts to LLM tool-use format)
+
+ToolResult contains: output (Any), status (success/error), metadata (dict).
+
+Arrows show: Agents query registry -> Registry returns matching tools -> Agent invokes tool -> Tool returns ToolResult -> Result stored in Memory Graph.

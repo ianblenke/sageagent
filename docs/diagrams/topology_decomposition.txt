@@ -1,0 +1,28 @@
+SageAgent Task Decomposition and Agent Topology.
+
+Shows how a complex task is recursively decomposed into a DAG of subtasks with specialized agents.
+
+Flow diagram from left to right:
+
+1. User Task Input: "Fix all security vulnerabilities in the codebase" enters the TaskDecomposer.
+
+2. TaskDecomposer (uses LLM): Analyzes task complexity and produces a TaskDAG with subtasks and dependencies.
+
+3. TaskDAG visualization as a tree/DAG:
+   Root: "Fix security vulnerabilities"
+   ├── Subtask A: "Scan for SQL injection" (complexity: 0.6, role: security_scanner) [no deps]
+   ├── Subtask B: "Scan for XSS" (complexity: 0.5, role: security_scanner) [no deps]
+   └── Subtask C: "Apply fixes" (complexity: 0.8, role: code_fixer) [depends on A, B]
+
+   A and B can run in parallel. C waits for both.
+
+4. TopologyManager spawns agents:
+   - Agent-A (role: security_scanner) handles Subtask A
+   - Agent-B (role: security_scanner) handles Subtask B
+   - When A and B complete, Agent-C (role: code_fixer) handles Subtask C
+
+5. Results flow back up: Each agent writes Discovery nodes to the Memory Graph. Agent-C reads results from A and B via graph traversal.
+
+6. Depth limit shown: If max_hierarchy_depth=3 and a subtask needs further decomposition at depth 3, the agent executes directly instead of spawning more sub-agents.
+
+The diagram emphasizes parallel execution of independent subtasks and the hierarchical nature of agent spawning.

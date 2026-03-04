@@ -1,0 +1,32 @@
+repos:
+  # ── Formatting ──────────────────────────────────────────────
+  - repo: https://github.com/psf/black
+    rev: 26.1.0
+    hooks:
+      - id: black
+        args: [--line-length=100]
+
+  # ── Linting ─────────────────────────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.4
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  # ── Secret detection ────────────────────────────────────────
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  # ── Tests with 100% coverage ────────────────────────────────
+  - repo: local
+    hooks:
+      - id: pytest-cov
+        name: pytest (100% coverage)
+        entry: pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

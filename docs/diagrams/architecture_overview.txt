@@ -1,0 +1,20 @@
+SageAgent Architecture Overview - a layered Agent Development Kit (ADK).
+
+The system has 6 layers stacked vertically:
+
+Top layer: CLI Interface (sageagent.cli) - Typer-based CLI with "run" and "config" commands. User submits tasks here.
+
+Second layer: Agent Engine (sageagent.core.engine) - AgentEngine orchestrator that wires all components together. Creates root agents, manages lifecycle, aggregates results.
+
+Third layer: Agent (sageagent.core.agent) - Agent base class with lifecycle: CREATED -> RUNNING -> COMPLETED/FAILED/TERMINATED. Each agent has a role, task, LLM backend, and tool access.
+
+Fourth layer splits into 3 parallel components:
+- Left: Topology Manager (sageagent.topology) - TaskDecomposer uses LLM to break tasks into DAGs. TopologyManager spawns sub-agents. Supports configurable depth limits.
+- Center: Memory Graph (sageagent.memory) - NetworkX-based DAG with typed nodes: TaskContext, Discovery, Execution, Relationship. Supports GC.
+- Right: Tool System (sageagent.tools) - ToolRegistry, DynamicToolGenerator, Built-in tools (shell, file_ops, docker, code_analysis).
+
+Fifth layer: Communication Bus (sageagent.communication) - MessageBus for sync signals: TaskCompleted, TaskFailed, TaskStarted, AgentSpawned, ShutdownRequest.
+
+Bottom layer: LLM Backends (sageagent.llm) - Abstract LLMBackend with ClaudeBackend (Anthropic API) and OpenAIBackend (OpenAI API). Standardized LLMResponse and ToolCall types.
+
+Arrows flow downward from CLI through Engine to Agent, then fan out to Topology/Memory/Tools, all sitting on Communication and LLM layers.

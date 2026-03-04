@@ -1,0 +1,7 @@
+title = "sageagent gitleaks config"
+
+[allowlist]
+  paths = [
+    '''\.coverage''',
+    '''tests/.*\.py''',
+  ]
