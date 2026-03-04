@@ -4,6 +4,8 @@ Open-source implementation of the [OpenSage whitepaper](https://arxiv.org/abs/26
 
 SageAgent is an **Agent Development Kit (ADK)** with self-generated topology, dynamic toolsets, and hierarchical graph-based memory.
 
+> **Video overview:** [Stop coding AI: Use Runtime Topological Self-Assembly](https://www.youtube.com/watch?v=nSTednV1uTA) — an explainer covering how OpenSage uses discrete topological symbolic graphs for multi-agent self-assembly and mathematical optimization.
+
 ![Architecture Overview](docs/diagrams/architecture_overview.png)
 
 ## Features
